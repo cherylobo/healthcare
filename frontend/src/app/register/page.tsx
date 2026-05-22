@@ -6,6 +6,7 @@ import Link from "next/link";
 
 export default function RegisterPage() {
   const [method, setMethod] = useState<"email" | "otp">("email");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
@@ -25,7 +26,7 @@ export default function RegisterPage() {
       const response = await fetch(`${backendUrl}/api/auth/register/email`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, password }),
       });
 
       const data = await response.json();
@@ -159,8 +160,29 @@ export default function RegisterPage() {
 
         {method === "email" && (
           <form className="space-y-5" onSubmit={handleEmailRegister}>
+
+            {/* Full Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Name
+              </label>
+
+              <input
+                type="text"
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500 text-gray-900"
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Email address
+              </label>
+
               <input
                 type="email"
                 required
@@ -170,8 +192,13 @@ export default function RegisterPage() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
+
+            {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Password
+              </label>
+
               <input
                 type="password"
                 required
@@ -181,6 +208,8 @@ export default function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
@@ -188,6 +217,7 @@ export default function RegisterPage() {
             >
               {loading ? "Registering..." : "Sign Up"}
             </button>
+
           </form>
         )}
 
